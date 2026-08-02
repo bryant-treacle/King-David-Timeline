@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Chronicle of David — An Illuminated Timeline</title>
+<meta name="description" content="A detailed, interactive chronicle timeline of the life of King David for adult study, with passages, historical context, word studies, and discussion questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vellum:#EAE3D2;
+    --vellum-panel:#F1EBDC;
+    --ink:#172038;
+    --ink-soft:#233052;
+    --text:#2A2620;
+    --muted:#6B6153;
+    --hairline:#CBBF9F;
+
+    /* manuscript pigment lenses */
+    --gold:#AE8A33;      /* gold leaf  — anointing & kingship */
+    --lapis:#2C4A7E;     /* lapis      — covenant & hesed */
+    --bronze:#8A5A2B;    /* bronze     — battles */
+    --verdigris:#3E7365; /* verdigris  — worship & temple */
+    --rubric:#8C3B2E;    /* red lead   — sin & fallout */
+    --tyrian:#6B3A6E;    /* Tyrian     — Psalms */
+
+    --serif:"EB Garamond",Georgia,serif;
+    --display:"Marcellus",Georgia,serif;
+    --sc:"Marcellus SC","Marcellus",serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+
+    --maxw:960px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--vellum);
+    background-image:
+      radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,.35), transparent 60%),
+      radial-gradient(140% 120% at 50% 120%, rgba(23,32,56,.06), transparent 55%);
+    color:var(--text);
+    font-family:var(--serif);
+    font-size:19px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--lapis);text-underline-offset:2px;}
+  ::selection{background:rgba(174,138,51,.28);}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ---------- HERO / FRONTISPIECE ---------- */
+  header.hero{
+    background:var(--ink);
+    color:var(--vellum);
+    padding:84px 24px 72px;
+    position:relative;
+    overflow:hidden;
+    text-align:center;
+  }
+  header.hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    opacity:.7;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--gold);margin:0 0 26px;
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(58px,13vw,132px);
+    letter-spacing:.14em;
+    margin:0;
+    line-height:.95;
+    color:#F3ECD8;
+    text-indent:.14em; /* balance the tracking */
+  }
+  .hero .thesis{
+    font-style:italic;
+    font-size:clamp(18px,2.4vw,23px);
+    color:#CFC7B0;
+    max-width:34ch;margin:22px auto 0;
+  }
+  .ornament{margin:30px auto 34px;display:block;color:var(--gold);}
+  .hero-stats{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:14px 40px;
+    margin-top:4px;
+  }
+  .hero-stats div{min-width:120px;}
+  .hero-stats .n{font-family:var(--display);font-size:26px;color:#F3ECD8;letter-spacing:.04em;}
+  .hero-stats .l{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:4px;}
+  .hero-note{margin-top:40px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:#8A8570;text-transform:uppercase;}
+
+  /* ---------- STICKY CHAPTER NAV ---------- */
+  nav.toc{
+    position:sticky;top:0;z-index:40;
+    background:rgba(234,227,210,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .toc-inner{
+    max-width:var(--maxw);margin:0 auto;
+    display:flex;gap:2px;overflow-x:auto;
+    padding:0 12px;scrollbar-width:thin;
+  }
+  .toc-inner::-webkit-scrollbar{height:5px;}
+  .toc-inner::-webkit-scrollbar-thumb{background:var(--hairline);border-radius:3px;}
+  .toc-inner a{
+    flex:0 0 auto;
+    font-family:var(--mono);
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);text-decoration:none;
+    padding:13px 12px;border-bottom:2px solid transparent;
+    white-space:nowrap;transition:color .2s,border-color .2s;
+  }
+  .toc-inner a .rn{color:var(--gold);font-weight:500;margin-right:6px;}
+  .toc-inner a:hover{color:var(--text);}
+  .toc-inner a.active{color:var(--ink);border-bottom-color:var(--gold);}
+
+  /* ---------- DISCLAIMER (rubric note) ---------- */
+  .disclaimer{
+    max-width:var(--maxw);margin:34px auto 0;padding:0 24px;
+  }
+  .disclaimer .note{
+    background:var(--vellum-panel);
+    border:1px solid var(--hairline);
+    border-left:4px solid var(--rubric);
+    border-radius:2px;
+    padding:18px 22px;
+  }
+  .disclaimer .rubric-lbl{
+    font-family:var(--sc);font-size:12px;letter-spacing:.18em;
+    color:var(--rubric);margin:0 0 8px;display:block;
+  }
+  .disclaimer p{margin:0 0 10px;font-size:16.5px;line-height:1.55;color:var(--ink-soft);}
+  .disclaimer p:last-child{margin-bottom:0;}
+  .disclaimer strong{color:var(--rubric);font-weight:600;}
+  .disclaimer a{color:var(--lapis);word-break:break-word;}
+
+  /* ---------- TOOLBAR / LENSES ---------- */
+  .toolbar{max-width:var(--maxw);margin:0 auto;padding:28px 24px 4px;}
+  .toolbar .lead{
+    font-family:var(--sc);font-size:14px;letter-spacing:.14em;
+    color:var(--muted);margin:0 0 12px;
+  }
+  .lenses{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .chip{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:7px;
+    padding:6px 12px;border-radius:2px;cursor:pointer;
+    background:var(--vellum-panel);
+    border:1px solid var(--hairline);
+    color:var(--muted);
+    transition:background .18s,color .18s,border-color .18s;
+  }
+  .chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c);flex:0 0 auto;}
+  .chip:hover{color:var(--text);}
+  .chip[aria-pressed="true"]{
+    background:var(--c);color:#F3ECD8;border-color:var(--c);
+  }
+  .chip[aria-pressed="true"] .dot{background:#F3ECD8;}
+  .toolbar-actions{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:14px;}
+  .txtbtn{
+    background:none;border:none;cursor:pointer;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--lapis);padding:4px 0;
+  }
+  .txtbtn:hover{color:var(--ink);}
+  .count{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);}
+
+  /* ---------- TIMELINE ---------- */
+  main{max-width:var(--maxw);margin:0 auto;padding:30px 24px 40px;position:relative;}
+  .timeline{position:relative;padding-left:64px;}
+  .spine{position:absolute;left:24px;top:0;bottom:0;width:2px;background:var(--hairline);}
+  .spine-fill{position:absolute;left:24px;top:0;width:2px;height:0;
+    background:linear-gradient(var(--gold),var(--gold));box-shadow:0 0 8px rgba(174,138,51,.5);}
+
+  .era{position:relative;margin:0 0 10px;padding-top:46px;}
+  .era-head{position:relative;margin-bottom:20px;}
+  .era-num{
+    position:absolute;left:-64px;top:-6px;width:52px;text-align:center;
+    font-family:var(--display);font-size:34px;color:var(--gold);
+    letter-spacing:.02em;line-height:1;
+  }
+  .era-title{
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(24px,3.6vw,33px);letter-spacing:.02em;
+    color:var(--ink);margin:0;line-height:1.12;
+  }
+  .era-range{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);margin-top:6px;text-transform:uppercase;}
+
+  .event{position:relative;margin:0 0 4px;transition:opacity .3s;}
+  .event::before{ /* node */
+    content:"";position:absolute;left:-44px;top:20px;
+    width:11px;height:11px;border-radius:50%;
+    background:var(--vellum);border:2px solid var(--gold);
+    box-shadow:0 0 0 4px var(--vellum);
+  }
+  .event.dim{opacity:.24;}
+  .event.dim .ev-btn{cursor:default;}
+
+  .ev-btn{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:14px 0;display:flex;gap:14px;align-items:baseline;
+    border-top:1px solid var(--hairline);
+    font-family:inherit;color:inherit;
+  }
+  .era .event:first-of-type .ev-btn{border-top:none;}
+  .ev-year{
+    font-family:var(--mono);font-size:12px;color:var(--bronze);
+    flex:0 0 96px;letter-spacing:.02em;padding-top:3px;
+  }
+  .ev-main{flex:1;min-width:0;}
+  .ev-title{font-family:var(--serif);font-weight:600;font-size:20px;color:var(--ink);line-height:1.3;}
+  .ev-tags{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;}
+  .ev-tags .t{width:10px;height:10px;border-radius:2px;background:var(--c);opacity:.9;}
+  .ev-caret{flex:0 0 auto;color:var(--muted);font-family:var(--mono);font-size:15px;transition:transform .25s;padding-top:2px;}
+  .event[open-state="true"] .ev-caret{transform:rotate(45deg);}
+
+  .ev-detail{
+    overflow:hidden;max-height:0;transition:max-height .35s ease;
+    padding-left:110px;
+  }
+  .ev-detail-inner{padding:2px 0 22px;}
+  .refs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .ref{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;
+    color:var(--lapis);background:var(--vellum-panel);
+    border:1px solid var(--hairline);border-radius:2px;padding:3px 8px;
+  }
+  .block{margin:0 0 12px;}
+  .block .lbl{
+    display:block;font-family:var(--sc);font-size:12px;letter-spacing:.16em;
+    color:var(--muted);margin-bottom:2px;
+  }
+  .block.verse{border-left:3px solid var(--gold);padding-left:16px;font-style:italic;color:var(--ink-soft);}
+  .block.psalms .lbl{color:var(--tyrian);}
+  .psalm-list{font-family:var(--mono);font-size:13px;color:var(--tyrian);}
+  .lens-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+  .lens-legend .t{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
+  .lens-legend .t i{width:9px;height:9px;border-radius:2px;background:var(--c);display:inline-block;}
+
+  /* tag pigments */
+  .tag-kingship{--c:var(--gold);}
+  .tag-covenant{--c:var(--lapis);}
+  .tag-battle{--c:var(--bronze);}
+  .tag-worship{--c:var(--verdigris);}
+  .tag-sin{--c:var(--rubric);}
+  .tag-psalm{--c:var(--tyrian);}
+
+  /* ---------- CODA (ink) ---------- */
+  .coda{background:var(--ink);color:var(--vellum);margin-top:40px;padding:70px 24px 30px;position:relative;}
+  .coda::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7;}
+  .coda .wrap{max-width:var(--maxw);}
+  .coda h2,.section h2{
+    font-family:var(--display);font-weight:400;font-size:clamp(26px,4vw,36px);
+    letter-spacing:.03em;margin:0 0 6px;
+  }
+  .coda h2{color:#F3ECD8;}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 10px;}
+  .legacy{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:30px;}
+  .legacy .card{border-top:1px solid rgba(174,138,51,.5);padding-top:16px;}
+  .legacy .card h3{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold);margin:0 0 8px;letter-spacing:.02em;}
+  .legacy .card p{margin:0;color:#CFC7B0;font-size:17px;}
+  .legacy .card .r{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#8A8570;margin-top:8px;}
+
+  /* ---------- LIGHT SECTIONS (table, questions) ---------- */
+  .section{max-width:var(--maxw);margin:0 auto;padding:64px 24px;}
+  .section h2{color:var(--ink);}
+  .section .kicker{color:var(--bronze);}
+  .pair-note{font-style:italic;color:var(--muted);max-width:60ch;margin:10px 0 0;}
+
+  table.words{width:100%;border-collapse:collapse;margin-top:26px;font-size:17px;}
+  table.words th,table.words td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--hairline);vertical-align:top;}
+  table.words th{font-family:var(--sc);font-size:12px;letter-spacing:.14em;color:var(--muted);font-weight:400;text-transform:uppercase;}
+  table.words td.term{font-family:var(--mono);font-size:14px;color:var(--tyrian);white-space:nowrap;}
+  table.words tr:hover td{background:rgba(241,235,220,.6);}
+
+  ol.questions{counter-reset:q;list-style:none;padding:0;margin:26px 0 0;}
+  ol.questions li{
+    position:relative;padding:0 0 22px 56px;margin:0;
+    border-bottom:1px solid var(--hairline);margin-bottom:22px;
+  }
+  ol.questions li:last-child{border-bottom:none;}
+  ol.questions li::before{
+    counter-increment:q;content:counter(q);
+    position:absolute;left:0;top:-4px;
+    font-family:var(--display);font-size:30px;color:var(--gold);
+  }
+
+  footer{background:var(--ink-soft);color:#B7B09A;text-align:center;padding:30px 24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;}
+  footer a{color:var(--gold);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:720px){
+    body{font-size:18px;}
+    .timeline{padding-left:40px;}
+    .spine,.spine-fill{left:14px;}
+    .era-num{left:-40px;font-size:26px;width:34px;}
+    .event::before{left:-30px;}
+    .ev-btn{flex-wrap:wrap;gap:6px 12px;}
+    .ev-year{flex-basis:auto;}
+    .ev-detail{padding-left:0;}
+    .hero{padding:60px 20px 52px;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="eyebrow">A Chronicle of the Second King of Israel · c. 1040–970 BC</p>
+  <h1>DAVID</h1>
+  <p class="thesis">Shepherd, fugitive, king, and psalmist — a whole-hearted life told from the cave to the throne.</p>
+  <svg class="ornament" width="120" height="16" viewBox="0 0 120 16" fill="none" aria-hidden="true">
+    <line x1="0" y1="8" x2="46" y2="8" stroke="currentColor" stroke-width="1"/>
+    <line x1="74" y1="8" x2="120" y2="8" stroke="currentColor" stroke-width="1"/>
+    <path d="M60 1 L67 8 L60 15 L53 8 Z" stroke="currentColor" stroke-width="1" fill="none"/>
+    <circle cx="60" cy="8" r="1.6" fill="currentColor"/>
+  </svg>
+  <div class="hero-stats">
+    <div><div class="n">40</div><div class="l">Years reigned</div></div>
+    <div><div class="n">7½ + 33</div><div class="l">Hebron · Jerusalem</div></div>
+    <div><div class="n">~73</div><div class="l">Psalms ascribed</div></div>
+    <div><div class="n">70</div><div class="l">Years of life</div></div>
+  </div>
+  <p class="hero-note">1 &amp; 2 Samuel · 1 Kings 1–2 · 1 Chronicles 10–29</p>
+</header>
+
+<div class="disclaimer">
+  <div class="note">
+    <span class="rubric-lbl">Please read first</span>
+    <p>This timeline may not be 100% complete or 100% accurate, and it <strong>should not be used for academic research</strong>. It is meant to give readers a chronological path of King David through 1 &amp; 2 Samuel, 1 Chronicles, and the Psalms.</p>
+    <p>If you are reading this and you have an issue, please head to my GitHub and open an issue: <a href="https://github.com/bryant-treacle/King-David-Timeline" target="_blank" rel="noopener">github.com/bryant-treacle/King-David-Timeline</a></p>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Chapters">
+  <div class="toc-inner" id="toc"></div>
+</nav>
+
+<div class="toolbar">
+  <p class="lead">Lenses — filter the life by theme <span style="font-family:var(--serif);font-style:italic;font-size:14px;text-transform:none;letter-spacing:0;">(colored with the pigments of a medieval Psalter)</span></p>
+  <div class="lenses" id="lenses"></div>
+  <div class="toolbar-actions">
+    <button class="txtbtn" id="expandAll">Expand all</button>
+    <button class="txtbtn" id="collapseAll">Collapse all</button>
+    <span class="count" id="count"></span>
+  </div>
+</div>
+
+<main>
+  <div class="timeline" id="timeline">
+    <div class="spine"></div>
+    <div class="spine-fill" id="spineFill"></div>
+  </div>
+</main>
+
+<section class="coda">
+  <div class="wrap">
+    <p class="kicker">Coda</p>
+    <h2>Why David Still Matters</h2>
+    <div class="legacy">
+      <div class="card">
+        <h3>A man after God's own heart</h3>
+        <p>Not sinless, but repentant — a whole-hearted worshiper who kept returning to God after catastrophic failure.</p>
+        <span class="r">1 Samuel 13:14 · Acts 13:22</span>
+      </div>
+      <div class="card">
+        <h3>An everlasting throne</h3>
+        <p>The Davidic Covenant carries forward to the Messiah, "great David's greater Son," born in David's own Bethlehem.</p>
+        <span class="r">Matthew 1:1 · Luke 1:32–33 · Revelation 22:16</span>
+      </div>
+      <div class="card">
+        <h3>The voice of the Psalter</h3>
+        <p>Roughly seventy-three psalms bear his name, giving the church its deepest vocabulary of praise, lament, and trust.</p>
+        <span class="r">The Book of Psalms</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Dates are approximate and anchored to a 40-year reign ending c. 970 BC · Built for adult study &amp; free to adapt
+</footer>
+
+<script>
+const TAGS = {
+  kingship:"Anointing & kingship",
+  covenant:"Covenant & hesed",
+  battle:"Battles",
+  worship:"Worship & temple",
+  sin:"Sin & fallout",
+  psalm:"Psalms"
+};
+
+const ERAS = [
+  { rn:"I", id:"roots", title:"Roots & Hidden Years", range:"c. 1040–1025 BC", events:[
+    { year:"c. 1040 BC", title:"Born in Bethlehem, youngest son of Jesse", refs:["1 Samuel 16:1–13","Ruth 4:18–22","Matthew 1:3–6"], tags:[],
+      context:`Bethlehem ("house of bread") is an unremarkable town in Judah. David is the eighth son in 1 Samuel 17:12, though 1 Chronicles 2:13–15 names only seven and calls him the seventh — likely a brother who left no line, a good moment to show how the biblical writers count for different reasons.`,
+      word:`David (dāwid) is tied to the root for "beloved," quietly previewing his identity long before God names Solomon Jedidiah, "beloved of the LORD."`,
+      extra:`His genealogy runs through Rahab the Canaanite and Ruth the Moabite — outsiders folded into the messianic line.` },
+    { year:"c. 1035 BC", title:"The shepherd years; he kills a lion and a bear", refs:["1 Samuel 16:11","1 Samuel 17:34–36"], tags:[],
+      character:`David's courage was forged unseen, protecting sheep nobody was watching him protect. The public Goliath moment is built on private faithfulness — ask where the class's "lion and bear" seasons have been.` }
+  ]},
+  { rn:"II", id:"anointed", title:"Anointed & Summoned to Court", range:"c. 1025 BC", events:[
+    { year:"c. 1025 BC", title:"Samuel secretly anoints David at Bethlehem", refs:["1 Samuel 16:1–13"], tags:["kingship"],
+      context:`Saul has already been rejected (1 Sam 15). Samuel is grieving and afraid Saul will kill him, so the anointing happens under cover of a sacrifice. Seven sons pass by; Eliab "looks the part."`,
+      verse:`"Man looks on the outward appearance, but the LORD looks on the heart." — 1 Samuel 16:7`,
+      word:`"Anointed" is māshîaḥ (Messiah); Greek christos. David becomes the archetype the title later points beyond.`,
+      extra:`"The Spirit of the LORD rushed upon David from that day forward" (16:13) — and in the very next verse departs from Saul.` },
+    { year:"c. 1025 BC", title:"Enters Saul's court as musician and armor-bearer", refs:["1 Samuel 16:14–23"], tags:[],
+      context:`A "harmful spirit" torments Saul; David's harp brings relief. The rejected king is being served, unknowingly, by his replacement.` }
+  ]},
+  { rn:"III", id:"goliath", title:"Goliath & the Rise to Fame", range:"c. 1024–1020 BC", events:[
+    { year:"c. 1024 BC", title:"Defeats Goliath in the Valley of Elah", refs:["1 Samuel 17"], tags:["battle"],
+      context:`The Philistines held an iron-working monopoly (1 Sam 13:19–22), so Israel faced a heavily armed foe at a technological disadvantage. Goliath's height is "six cubits and a span" (~9'9") in the Hebrew; some Greek and Dead Sea Scroll readings give "four cubits" (~6'9") — still a giant.`,
+      verse:`"The battle is the LORD's, and he will give you into our hand." — 1 Samuel 17:47`,
+      character:`David refuses Saul's armor and fights as himself. Contrast his brother Eliab's contempt (17:28) with David's focus.` },
+    { year:"c. 1023 BC", title:"Covenant friendship with Jonathan begins", refs:["1 Samuel 18:1–4"], tags:["covenant"],
+      word:`The friendship is framed in covenant (berith) language; Jonathan gives David his robe and armor — the crown prince symbolically handing over his own claim.` },
+    { year:"c. 1023 BC", title:"Military success, Saul's jealousy, and marriage to Michal", refs:["1 Samuel 18"], tags:[],
+      context:`The women's song — "Saul has struck down his thousands, and David his ten thousands" — ignites Saul's envy. Saul hurls a spear; David wins Michal by bringing 200 Philistine foreskins as bride-price.` }
+  ]},
+  { rn:"IV", id:"fugitive", title:"The Fugitive Years", range:"c. 1020–1012 BC", events:[
+    { year:"c. 1019 BC", title:"Michal helps David escape through a window", refs:["1 Samuel 19:11–17"], tags:["psalm"], psalms:["Psalm 59"],
+      context:`Michal lowers David through a window and lays an idol in the bed to buy time — the last of Saul's house helping the man who will replace it.` },
+    { year:"c. 1019 BC", title:"Flight to Samuel at Ramah; Saul's men prophesy", refs:["1 Samuel 19:18–24"], tags:[] },
+    { year:"c. 1019 BC", title:"Jonathan's covenant renewed; the arrow signal", refs:["1 Samuel 20"], tags:["covenant"] },
+    { year:"c. 1018 BC", title:"Nob — Ahimelech gives the showbread and Goliath's sword", refs:["1 Samuel 21:1–9"], tags:[],
+      context:`Doeg the Edomite witnesses this; Saul later has him slaughter 85 priests of Nob (1 Sam 22:6–23). Jesus cites the showbread episode to teach mercy over ritual (Mark 2:25–26).` },
+    { year:"c. 1018 BC", title:"Gath — David feigns madness before King Achish", refs:["1 Samuel 21:10–15"], tags:["psalm"], psalms:["Psalm 34","Psalm 56"] },
+    { year:"c. 1018 BC", title:"Cave of Adullam — 400 outcasts gather to him", refs:["1 Samuel 22:1–2"], tags:["psalm"], psalms:["Psalm 57","Psalm 142"],
+      character:`His mighty men start as the "distressed, in debt, and discontented." Leadership is formed in a cave.` },
+    { year:"c. 1018 BC", title:"Parents sent to Moab for safety", refs:["1 Samuel 22:3–4"], tags:[] },
+    { year:"c. 1017 BC", title:"Rescues Keilah, then flees its betrayal", refs:["1 Samuel 23:1–13"], tags:["battle"] },
+    { year:"c. 1016 BC", title:"Wilderness of Ziph — Jonathan's last visit; Ziphites betray him", refs:["1 Samuel 23:14–24"], tags:["psalm","covenant"], psalms:["Psalm 54"] },
+    { year:"c. 1016 BC", title:"Wilderness of Maon — a Philistine raid pulls Saul away", refs:["1 Samuel 23:24–29"], tags:[] },
+    { year:"c. 1015 BC", title:"En-gedi — David spares Saul in the cave", refs:["1 Samuel 24"], tags:["kingship"],
+      verse:`"I will not put out my hand against the LORD's anointed." — 1 Samuel 24:10`,
+      character:`David refuses to seize by force what God has promised to give.` },
+    { year:"c. 1015 BC", title:"Nabal and Abigail; Samuel dies", refs:["1 Samuel 25"], tags:[],
+      character:`Abigail talks David out of a massacre — a rare moment when he is restrained by someone else's wisdom, and vengeance is left to God.` },
+    { year:"c. 1014 BC", title:"Ziph again — David spares Saul a second time", refs:["1 Samuel 26"], tags:["kingship"],
+      context:`He takes Saul's spear and water jug from beside his head while the camp sleeps, then calls across the valley.` },
+    { year:"c. 1013 BC", title:"Refuge in Gath; given the town of Ziklag", refs:["1 Samuel 27"], tags:[],
+      context:`David walks a razor's edge for sixteen months, raiding Israel's enemies while letting Achish believe he raids Judah.` },
+    { year:"c. 1011 BC", title:"Philistine commanders reject David from the battle line", refs:["1 Samuel 29"], tags:[],
+      context:`God spares him from having to fight against his own people at Gilboa.` },
+    { year:"c. 1011 BC", title:"Saul consults the medium of Endor", refs:["1 Samuel 28"], tags:[] },
+    { year:"c. 1011 BC", title:"Ziklag burned; David pursues and recovers everyone", refs:["1 Samuel 30"], tags:["battle"],
+      context:`He rules that those who guard the baggage share the spoil equally with those who fight (30:24) — an enduring ethic of the community.` }
+  ]},
+  { rn:"V", id:"saul-death", title:"The Death of Saul", range:"c. 1011 BC", events:[
+    { year:"c. 1011 BC", title:"Saul and his sons, including Jonathan, die at Gilboa", refs:["1 Samuel 31","1 Chronicles 10"], tags:["battle"] },
+    { year:"c. 1011 BC", title:"David executes the Amalekite; composes the Song of the Bow", refs:["2 Samuel 1"], tags:[],
+      verse:`"How the mighty have fallen!" — 2 Samuel 1:19, 25, 27`,
+      character:`David grieves both his persecutor and his friend without a trace of triumph.` }
+  ]},
+  { rn:"VI", id:"hebron", title:"King at Hebron — Seven and a Half Years", range:"c. 1010–1003 BC", events:[
+    { year:"c. 1010 BC", title:"Anointed king over Judah at Hebron", refs:["2 Samuel 2:1–4"], tags:["kingship"],
+      context:`Abner installs Saul's son Ish-bosheth as king over the northern tribes (2:8–11), and a long civil war follows.` },
+    { year:"c. 1009 BC", title:"Battle of Gibeon; Abner kills Asahel, Joab's brother", refs:["2 Samuel 2:12–32"], tags:["battle"],
+      context:`This blood debt drives Joab's revenge for chapters to come.` },
+    { year:"c. 1008 BC", title:'"Stronger and stronger"; six sons born at Hebron', refs:["2 Samuel 3:1–5"], tags:[],
+      context:`The sons are Amnon, Chileab, Absalom, Adonijah, Shephatiah, and Ithream. Remember the first, third, and fourth — each becomes a crisis.` },
+    { year:"c. 1004 BC", title:"Abner defects to David; Joab murders him in revenge", refs:["2 Samuel 3:6–39"], tags:[],
+      context:`David publicly mourns Abner, clearing himself of the killing.` },
+    { year:"c. 1004 BC", title:"Ish-bosheth assassinated; David executes the assassins", refs:["2 Samuel 4"], tags:["kingship"],
+      character:`Again David refuses to profit from another man's murder of an anointed rival.` }
+  ]},
+  { rn:"VII", id:"jerusalem", title:"King over All Israel; Jerusalem Established", range:"c. 1003 BC", events:[
+    { year:"c. 1003 BC", title:"All the tribes anoint David king at Hebron", refs:["2 Samuel 5:1–5","1 Chronicles 11:1–3"], tags:["kingship"],
+      verse:`Age 30 at his accession, David reigns 40 years total — 7½ in Hebron and 33 in Jerusalem. — 2 Samuel 5:4–5` },
+    { year:"c. 1003 BC", title:"Captures Jebus; it becomes the City of David / Zion", refs:["2 Samuel 5:6–10","1 Chronicles 11:4–9"], tags:["battle","kingship"],
+      context:`Joab leads the assault through the water shaft (tsinnôr). Jerusalem sat on a tribal border, politically neutral — a shrewd capital that belonged to no single tribe.` },
+    { year:"c. 1002 BC", title:"Hiram of Tyre sends cedar; more sons born in Jerusalem", refs:["2 Samuel 5:11–16"], tags:[],
+      context:`Among the Jerusalem sons are Nathan and Solomon.` },
+    { year:"c. 1002 BC", title:"Two decisive Philistine victories in the Valley of Rephaim", refs:["2 Samuel 5:17–25"], tags:["battle"],
+      character:`David inquires of God before each battle and is told to win each one differently.` }
+  ]},
+  { rn:"VIII", id:"ark", title:"The Ark & the Covenant", range:"c. 1000–995 BC", events:[
+    { year:"c. 1000 BC", title:"First attempt to move the ark fails; Uzzah is struck dead", refs:["2 Samuel 6:1–11","1 Chronicles 13"], tags:["worship"],
+      context:`The ark is carried on a new cart (the Philistine method) rather than on poles by the Levites as the Law required. In 1 Chronicles 15 David corrects course: "no one but the Levites may carry the ark." Good intentions do not override God's revealed way.` },
+    { year:"c. 999 BC", title:"The ark enters Jerusalem; David dances; Michal despises him", refs:["2 Samuel 6:12–23","1 Chronicles 15–16"], tags:["worship","psalm"], psalms:["Psalm 24","Psalm 68","Psalm 96","Psalm 105"],
+      character:`David worships "with all his might" in a linen ephod; Michal's contempt and resulting childlessness end the chapter — the last of Saul's house set against the joy of David's.` },
+    { year:"c. 995 BC", title:"The Davidic Covenant: God promises an everlasting dynasty", refs:["2 Samuel 7","1 Chronicles 17"], tags:["covenant","kingship"], psalms:["Psalm 89","Psalm 132"],
+      context:`The reversal: David wants to build God a house (temple); God declares He will build David a "house" (dynasty) whose throne endures forever (7:16). This is the theological hinge of his life — the promise the New Testament takes up in "Son of David."`,
+      verse:`"Who am I, O Lord GOD, and what is my house, that you have brought me thus far?" — 2 Samuel 7:18` }
+  ]},
+  { rn:"IX", id:"height", title:"The Kingdom at Its Height", range:"c. 995–991 BC", events:[
+    { year:"c. 994 BC", title:"Sweeping victories; the empire reaches its greatest extent", refs:["2 Samuel 8","1 Chronicles 18"], tags:["battle"],
+      context:`Philistines, Moab, Zobah, Aram-Damascus, and Edom are subdued; dedicated spoil is stored for the future temple. "David administered justice and equity to all his people" (8:15), with Joab over the army and Benaiah over the royal guard.` },
+    { year:"c. 993 BC", title:"Kindness to Mephibosheth, Jonathan's crippled son", refs:["2 Samuel 9"], tags:["covenant"],
+      word:`hesed — covenant loyalty. David seeks someone "to whom I may show the kindness of God" for Jonathan's sake. Mephibosheth, lame in both feet and heir of a rival house, eats at the king's table "like one of the king's sons" — a gospel picture worth lingering on.` },
+    { year:"c. 992 BC", title:"The Ammonite–Aramean war; David's envoys humiliated", refs:["2 Samuel 10","1 Chronicles 19"], tags:["battle"],
+      context:`This war sets the stage — chapter 11 opens in its second season.` }
+  ]},
+  { rn:"X", id:"bathsheba", title:"Bathsheba — The Turning Point", range:"c. 991 BC", events:[
+    { year:"c. 991 BC", title:'"When kings go out to battle" — David stays home', refs:["2 Samuel 11:1"], tags:["sin"],
+      context:`The narrator flags the failure before the sin: the king is idle where he ought to be leading.` },
+    { year:"c. 991 BC", title:"Adultery with Bathsheba; the murder of Uriah the Hittite", refs:["2 Samuel 11"], tags:["sin"],
+      context:`Bathsheba's father Eliam and her husband Uriah are both among David's elite "Thirty" (2 Sam 23:34, 39). David betrays men who would have died for him. Uriah, a foreigner, shows more integrity drunk than David does sober — and carries his own death warrant to Joab.` },
+    { year:"c. 991 BC", title:'Nathan\u2019s confrontation: "You are the man"', refs:["2 Samuel 12:1–15"], tags:["sin","psalm"], psalms:["Psalm 51","Psalm 32"],
+      context:`The parable of the ewe lamb traps David into judging himself. The sentence: the sword will never depart from his house. Sin forgiven, consequences remain.` },
+    { year:"c. 990 BC", title:"The child dies; Solomon is born; Rabbah falls", refs:["2 Samuel 12:15–31"], tags:["sin"],
+      context:`Grief, then grace — a son named Jedidiah, "beloved of the LORD," who will build the temple David cannot.` }
+  ]},
+  { rn:"XI", id:"sword", title:'"The Sword Shall Never Depart" — Family Collapse', range:"c. 988–979 BC", events:[
+    { year:"c. 988 BC", title:"Amnon rapes his half-sister Tamar; David does nothing", refs:["2 Samuel 13:1–22"], tags:["sin"],
+      character:`David's passivity as a father lets wounds fester — and his own sin now reappears in his children.` },
+    { year:"c. 986 BC", title:"Absalom murders Amnon and flees to Geshur", refs:["2 Samuel 13:23–39"], tags:["sin"],
+      context:`He takes refuge with his maternal grandfather, the king of Geshur, for three years.` },
+    { year:"c. 983 BC", title:"Joab and the wise woman of Tekoa engineer Absalom's return", refs:["2 Samuel 14"], tags:[],
+      context:`Absalom is recalled but kept at arm's length for two more years, and burns Joab's field to force a meeting.` },
+    { year:"c. 979 BC", title:"Absalom's rebellion; David flees Jerusalem", refs:["2 Samuel 15"], tags:["sin","psalm"], psalms:["Psalm 3","Psalm 63"],
+      context:`Absalom "steals the hearts" of Israel at the city gate, then has himself proclaimed king at Hebron. David evacuates weeping up the Mount of Olives, sends the ark back, and plants Hushai as a double agent.` },
+    { year:"c. 979 BC", title:"On the road: Ziba's slander and Shimei's curses", refs:["2 Samuel 16:1–14"], tags:[],
+      verse:`"Let him curse... it may be that the LORD will look on my affliction." — 2 Samuel 16:11–12` },
+    { year:"c. 979 BC", title:"Ahithophel vs. Hushai; the counsel that saves David", refs:["2 Samuel 16:20–17:23"], tags:["sin"],
+      context:`Ahithophel advises Absalom to lie with David's concubines on the palace roof — exactly Nathan's word (12:11–12). But Hushai's counsel prevails, and Ahithophel goes home and hangs himself.` },
+    { year:"c. 979 BC", title:"Battle in the forest of Ephraim; Absalom killed against orders", refs:["2 Samuel 18"], tags:["battle","sin"],
+      character:`Absalom is caught by his head in an oak; Joab kills him. "O my son Absalom... would I had died instead of you!" — and Joab's blunt rebuke.` },
+    { year:"c. 979 BC", title:"The return to Jerusalem; a fractured kingdom", refs:["2 Samuel 19"], tags:[],
+      context:`Shimei pardoned, Mephibosheth's account heard, aged Barzillai honored — while Judah and Israel already quarrel over the king.` }
+  ]},
+  { rn:"XII", id:"appendix", title:"Sheba's Revolt & the Appendix Years", range:"c. 979–975 BC", events:[
+    { year:"c. 979 BC", title:"Sheba son of Bichri leads a northern secession", refs:["2 Samuel 20"], tags:[],
+      context:`"We have no portion in David" (20:1) — the same cry that will split the kingdom a generation later. Joab murders Amasa; a wise woman of Abel ends the revolt by throwing Sheba's head over the wall.` },
+    { year:"c. 977 BC", title:"The Gibeonite famine; Rizpah's vigil", refs:["2 Samuel 21:1–14"], tags:[],
+      context:`Three years of famine trace back to Saul's broken oath; Rizpah guarding the bodies of her sons is one of Scripture's most haunting images of grief and loyalty.`,
+      note:`Chapters 21–24 are arranged thematically, not strictly by date — an "appendix" gathering earlier and later material.` },
+    { year:"c. 976 BC", title:"Wars with the Philistine giants; David nearly killed", refs:["2 Samuel 21:15–22"], tags:["battle"],
+      context:`His men swear he will "no longer go out with us to battle, lest you quench the lamp of Israel."` },
+    { year:"c. 975 BC", title:"David's psalm of deliverance and his last words", refs:["2 Samuel 22","2 Samuel 23:1–7"], tags:["psalm"], psalms:["Psalm 18"],
+      context:`2 Samuel 22 is preserved a second time as Psalm 18.` },
+    { year:"late reign", title:"The roll of the Mighty Men; water from Bethlehem's well", refs:["2 Samuel 23:8–39","1 Chronicles 11:10–47"], tags:[],
+      character:`Three warriors break through enemy lines for a drink from Bethlehem's well — which David pours out to the LORD rather than drink. A study in devotion and what leaders do with sacrifice made on their behalf.` },
+    { year:"late reign", title:"The census, the plague, and the threshing floor of Araunah", refs:["2 Samuel 24","1 Chronicles 21"], tags:["sin","worship"],
+      context:`David numbers the fighting men; a plague follows; the destroying angel halts at Araunah's threshing floor. David insists on paying full price — and 1 Chronicles 22:1 names this very floor as the future temple site. Judgment ground becomes worship ground.`,
+      verse:`"I will not offer... that which costs me nothing." — 2 Samuel 24:24` }
+  ]},
+  { rn:"XIII", id:"temple", title:"Preparing the Temple — The Chronicler's David", range:"late reign", events:[
+    { year:"late reign", title:"David amasses materials and charges Solomon to build", refs:["1 Chronicles 22"], tags:["worship"],
+      context:`Chronicles omits Bathsheba and Absalom almost entirely and spotlights David the worship-architect — a striking study in how the same life is framed for a later audience that needed hope in the covenant and the temple.` },
+    { year:"late reign", title:"Organizes the Levites, priests, musicians, and gatekeepers", refs:["1 Chronicles 23–26"], tags:["worship"],
+      context:`Twenty-four priestly courses and appointed singers give Israel's worship its enduring structure.` },
+    { year:"late reign", title:"Hands Solomon the temple pattern and leads the people's offering", refs:["1 Chronicles 28–29"], tags:["worship"],
+      verse:`"All things come from you, and of your own have we given you." — 1 Chronicles 29:14` }
+  ]},
+  { rn:"XIV", id:"succession", title:"Succession & Death", range:"c. 971–970 BC", events:[
+    { year:"c. 971 BC", title:"Adonijah's coup; Solomon anointed at the Gihon spring", refs:["1 Kings 1"], tags:["kingship"],
+      context:`Adonijah, backed by Joab and Abiathar, declares himself king. Nathan and Bathsheba intervene, and Zadok anoints Solomon.` },
+    { year:"c. 970 BC", title:"David's final charge to Solomon", refs:["1 Kings 2:1–9"], tags:[],
+      verse:`"Be strong, and show yourself a man... keep the charge of the LORD your God." — 1 Kings 2:2–3` },
+    { year:"c. 970 BC", title:'David dies "in a good old age" and is buried in the City of David', refs:["1 Kings 2:10–12","1 Chronicles 29:26–30"], tags:[],
+      context:`He had reigned forty years and died around age seventy, "full of days, riches, and honor."` }
+  ]}
+];
+
+/* ---------- render ---------- */
+const timeline = document.getElementById('timeline');
+const toc = document.getElementById('toc');
+const lenses = document.getElementById('lenses');
+const active = new Set();
+
+function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+
+ERAS.forEach(era=>{
+  const sec = el('section','era'); sec.id = era.id;
+  const head = el('div','era-head');
+  head.appendChild(el('div','era-num',era.rn));
+  head.appendChild(el('h2','era-title',era.title));
+  head.appendChild(el('div','era-range',era.range));
+  sec.appendChild(head);
+
+  era.events.forEach(ev=>{
+    const wrap = el('article','event tag-carrier');
+    wrap.dataset.tags = ev.tags.join(' ');
+    ev.tags.forEach(t=>wrap.classList.add('tag-'+t)); // only for :root var chaining not needed; harmless
+
+    const btn = el('button','ev-btn');
+    btn.setAttribute('aria-expanded','false');
+    btn.appendChild(el('span','ev-year',ev.year));
+    const mainc = el('div','ev-main');
+    mainc.appendChild(el('div','ev-title',ev.title));
+    if(ev.tags.length){
+      const tg = el('div','ev-tags');
+      ev.tags.forEach(t=>{ const s=el('span','t tag-'+t); s.title=TAGS[t]; tg.appendChild(s); });
+      mainc.appendChild(tg);
+    }
+    btn.appendChild(mainc);
+    btn.appendChild(el('span','ev-caret','+'));
+    wrap.appendChild(btn);
+
+    const detail = el('div','ev-detail');
+    const inner = el('div','ev-detail-inner');
+    const refs = el('div','refs');
+    ev.refs.forEach(r=>refs.appendChild(el('span','ref',r)));
+    inner.appendChild(refs);
+    if(ev.verse) inner.appendChild(el('div','block verse',ev.verse));
+    if(ev.context){ const b=el('div','block'); b.appendChild(el('span','lbl','Historical context')); b.appendChild(el('div',null,ev.context)); inner.appendChild(b); }
+    if(ev.word){ const b=el('div','block'); b.appendChild(el('span','lbl','Word study')); b.appendChild(el('div',null,ev.word)); inner.appendChild(b); }
+    if(ev.character){ const b=el('div','block'); b.appendChild(el('span','lbl','Character study')); b.appendChild(el('div',null,ev.character)); inner.appendChild(b); }
+    if(ev.extra){ const b=el('div','block'); b.appendChild(el('div',null,ev.extra)); inner.appendChild(b); }
+    if(ev.note){ const b=el('div','block'); b.appendChild(el('span','lbl','Note')); b.appendChild(el('div',null,ev.note)); inner.appendChild(b); }
+    if(ev.psalms){ const b=el('div','block psalms'); b.appendChild(el('span','lbl','Paired psalms')); b.appendChild(el('div','psalm-list',ev.psalms.join(' · '))); inner.appendChild(b); }
+    if(ev.tags.length){
+      const lg = el('div','lens-legend');
+      ev.tags.forEach(t=>{ const s=el('span','t tag-'+t); s.innerHTML='<i></i>'+TAGS[t]; lg.appendChild(s); });
+      inner.appendChild(lg);
+    }
+    detail.appendChild(inner);
+    wrap.appendChild(detail);
+
+    btn.addEventListener('click',()=>toggle(wrap,detail,btn));
+    sec.appendChild(wrap);
+  });
+
+  timeline.appendChild(sec);
+
+  const a = el('a',null,'<span class="rn">'+era.rn+'</span>'+era.title);
+  a.href = '#'+era.id; a.dataset.era = era.id;
+  toc.appendChild(a);
+});
+
+/* lenses */
+Object.entries(TAGS).forEach(([key,label])=>{
+  const chip = el('button','chip tag-'+key);
+  chip.setAttribute('aria-pressed','false');
+  chip.innerHTML = '<span class="dot"></span>'+label;
+  chip.addEventListener('click',()=>{
+    if(active.has(key)){active.delete(key);chip.setAttribute('aria-pressed','false');}
+    else{active.add(key);chip.setAttribute('aria-pressed','true');}
+    applyFilter();
+  });
+  lenses.appendChild(chip);
+});
+
+const allEvents = () => Array.from(document.querySelectorAll('.event'));
+const countEl = document.getElementById('count');
+
+function applyFilter(){
+  const evs = allEvents();
+  let shown = 0;
+  evs.forEach(e=>{
+    const tags = (e.dataset.tags||'').split(' ').filter(Boolean);
+    const match = active.size===0 || tags.some(t=>active.has(t));
+    e.classList.toggle('dim',!match);
+    if(match) shown++;
+  });
+  countEl.textContent = active.size===0 ? evs.length+' events' : shown+' of '+evs.length+' events';
+}
+
+function toggle(wrap,detail,btn,force){
+  const open = force!=null ? force : btn.getAttribute('aria-expanded')!=='true';
+  btn.setAttribute('aria-expanded',String(open));
+  wrap.setAttribute('open-state',String(open));
+  detail.style.maxHeight = open ? detail.firstElementChild.scrollHeight+40+'px' : '0px';
+}
+
+document.getElementById('expandAll').addEventListener('click',()=>{
+  allEvents().forEach(w=>{ if(w.classList.contains('dim'))return; toggle(w,w.querySelector('.ev-detail'),w.querySelector('.ev-btn'),true); });
+});
+document.getElementById('collapseAll').addEventListener('click',()=>{
+  allEvents().forEach(w=>toggle(w,w.querySelector('.ev-detail'),w.querySelector('.ev-btn'),false));
+});
+
+/* scroll-spy for TOC */
+const tocLinks = Array.from(toc.querySelectorAll('a'));
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      tocLinks.forEach(l=>l.classList.toggle('active',l.dataset.era===en.target.id));
+      const activeLink = toc.querySelector('a.active');
+      if(activeLink) activeLink.scrollIntoView({block:'nearest',inline:'nearest'});
+    }
+  });
+},{rootMargin:'-45% 0px -50% 0px',threshold:0});
+document.querySelectorAll('.era').forEach(s=>spy.observe(s));
+
+/* spine fill on scroll */
+const spineFill = document.getElementById('spineFill');
+const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+function updateSpine(){
+  const rect = timeline.getBoundingClientRect();
+  const total = timeline.offsetHeight;
+  const scrolled = Math.min(Math.max(window.innerHeight*0.5 - rect.top,0),total);
+  spineFill.style.height = (scrolled/total*100)+'%';
+}
+window.addEventListener('scroll',updateSpine,{passive:true});
+window.addEventListener('resize',()=>{updateSpine();
+  // re-measure any open panels
+  allEvents().forEach(w=>{ if(w.getAttribute('open-state')==='true'){ const d=w.querySelector('.ev-detail'); d.style.maxHeight=d.firstElementChild.scrollHeight+40+'px'; }});
+});
+
+applyFilter();
+updateSpine();
+</script>
+</body>
+</html>
