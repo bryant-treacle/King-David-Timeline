@@ -1,3 +1,162 @@
+
+/
+
+Architected interactive HTML timeline with filterable events and expandable cards
+Architected interactive HTML timeline with filterable events and expandable cards
+Great idea—a static HTML page is exactly what GitHub Pages serves, so I can build this as a single self-contained file. Let me check the design guidance first, then build it.
+
+
+Architected illuminated manuscript-inspired David timeline with interactive filtering and GitHub Pages deployment
+Architected illuminated manuscript-inspired David timeline with interactive filtering and GitHub Pages deployment
+Design plan before I build (so it doesn't come out looking templated):
+
+The subject's own world is the illuminated Psalter and the scribal culture of ancient Israel, so I'm theming the page as an illuminated manuscript / chronicle codex rather than a generic timeline. The one real move I'm making: the six thematic "lenses" you can filter by are colored with actual medieval manuscript pigments — gold leaf (kingship), lapis (covenant), bronze (battle), verdigris (worship & temple), red-lead rubric (sin & fallout), and Tyrian purple (Psalms). Type is a deliberate trio: Marcellus (carved Roman capitals) for headings, EB Garamond (humanist serif) for reading, and IBM Plex Mono for the BC date-stamps and passage refs, so the dates read like a scholarly critical apparatus. Deep ink-indigo hero and coda bookend a vellum reading body, with a single gold "spine" thread running the whole length that fills as you scroll.
+
+Interactions: sticky chapter nav with scroll-spy, click-to-expand event cards (with expand/collapse-all), and the pigment lenses that spotlight matching events. Let me build it.
+
+
+Devised validation strategy for interactive webpage conversion
+Devised validation strategy for interactive webpage conversion
+Let me quickly sanity-check the file for syntax errors before handing it over.
+
+
+Validating JS syntax and basic HTML tag balance
+Validating JS syntax and basic HTML tag balance
+Validated—JS parses cleanly and the structure is sound. Here's your page.
+
+
+Presented file
+Presented file
+It's a single self-contained index.html—all the content, styling, and interactivity are inline, with fonts pulled from Google Fonts, so GitHub Pages can serve it with zero setup. What you get:
+
+A scroll-spy chapter nav across the top that tracks where you are in David's life (chapters I–XIV).
+Click-to-expand event cards. Each of the ~50 events opens to reveal its passages, historical context, word study, character notes, key verse, and paired psalms. There's Expand all / Collapse all too.
+The pigment "lenses" — tap Anointing & kingship, Battles, Covenant, Worship, Sin & fallout, or Psalms to spotlight just those events; the rest fade so the shape of the life still shows. The colors are real manuscript pigments (gold leaf, lapis, bronze, verdigris, red-lead, Tyrian purple).
+A gold timeline spine that fills as you scroll, plus the word-study table, psalm-pairing tip, and your six discussion questions at the bottom.
+It's responsive down to phones, keyboard-accessible, and respects reduced-motion settings.
+
+To host it on GitHub Pages:
+
+Create a new repository on GitHub (e.g. david-timeline).
+Upload this file—keep the name index.html so it loads at the site root. (On the repo page: Add file → Upload files, drag it in, commit.)
+Go to Settings → Pages, set Source to Deploy from a branch, pick the main branch and the / (root) folder, and save.
+Wait a minute or two; your site appears at https://<your-username>.github.io/david-timeline/.
+A couple of things worth knowing. The intermediate BC dates on the fugitive-years and later events are my own reasonable interpolations to space the timeline sensibly—the anchor dates (anointing, Hebron, all-Israel, ~970 death) are the load-bearing ones, and I'd soften or drop the in-between years if a sharp-eyed class member asks. And because the fonts load from Google, the page needs an internet connection to look exactly right; if you ever want it fully offline, I can swap to system fonts.
+
+Want me to add anything—a print stylesheet so it prints as a clean handout, a search box, or a "jump to the Psalms" view that pulls out only the psalm-linked events?
+
+
+Index
+Code · HTML 
+How do I add it to Github pages
+
+Here's the full walkthrough. You'll need a free GitHub account—if you don't have one, sign up at github.com first.
+
+1. Create a new repository
+
+Once logged in, click the + in the top-right corner and choose New repository.
+Give it a name, like david-timeline.
+Leave it set to Public (Pages needs Public on free accounts).
+Check Add a README file so the repo isn't empty.
+Click Create repository.
+2. Upload the file
+
+On your new repo's main page, click Add file → Upload files.
+Drag index.html into the box (or click choose your files and select it). The name must stay exactly index.html.
+Scroll down and click Commit changes.
+3. Turn on Pages
+
+Click Settings (top menu of the repo).
+In the left sidebar, click Pages.
+Under Source, choose Deploy from a branch.
+Set the branch to main and the folder to / (root), then click Save.
+4. Visit your site
+
+Wait about 1–2 minutes for it to build (the first time can take a bit longer).
+Refresh the Pages settings screen, and a link will appear near the top: https://<your-username>.github.io/david-timeline/.
+Click it, and your timeline is live.
+A few things that trip people up:
+
+The name has to be index.html (all lowercase) for the site to load automatically at that address. If it's named anything else, you'd have to add the filename to the URL.
+
+If you see a plain README or a 404 at first, give it another minute and hard-refresh (Ctrl+Shift+R, or Cmd+Shift+R on a Mac)—Pages sometimes takes a moment on the first build.
+
+To update the page later, just upload a new index.html the same way; it replaces the old one and the site refreshes within a minute or two.
+
+The link is public and shareable, so anyone in your class can open it on a phone or laptop with no login.
+
+If you'd rather skip the manual clicking, the drag-and-drop upload above is genuinely the easiest path—there's no need to install Git or use the command line for a single file. Want me to also give you a QR code you can drop into a handout so people can pull it up on their phones in class?
+
+Can you add a disclaimer at the top stating that this timeline may not be 100% complete or 100% accurate? It should not be used for academic research!! It is meant to give readers a chronological path of King David through 1 & 2 Samuel, 1 Chronicles, and the Psalms. 
+
+If you are reading this and you have an issue, please go to my GitHub and create an issue: https://github.com/bryant-treacle/King-David-Timeline
+
+
+Crafting disclaimer banner with GitHub reporting link
+Crafting disclaimer banner with GitHub reporting link
+Good call—a disclaimer belongs on something people will share around. Let me look at the file and add it.
+
+
+Viewed 2 files
+Viewed 2 files
+Now I'll add the disclaimer styling and the banner itself. I'll style it as a manuscript rubric (the red-lead note historically used for instructions in the margins), so it fits the design.
+
+First the CSS—I'll add it near the toolbar styles:
+
+
+Edited 2 files, ran a command
+Edited 2 files, ran a command
+Done. Here's the updated file.
+
+
+Presented file
+Presented file
+The disclaimer now sits right below the "DAVID" hero, before the chapter navigation, so it's the first thing a reader sees when they land. I styled it as a rubric note—red-lead margin notes were historically how scribes flagged instructions to the reader, so it fits the manuscript theme while clearly standing apart from the content. It says the timeline may not be complete or accurate, should not be used for academic research (that line and "rubric" heading are in the red rubric color for emphasis), states its purpose as a chronological path through 1 & 2 Samuel, 1 Chronicles, and the Psalms, and links to your GitHub issues page (opening in a new tab).
+
+Since you already have a repo at that URL, updating your live site is just: go to the repo, Add file → Upload files, drop in this new index.html, and Commit changes—it'll replace the old one and refresh within a minute or two.
+
+Still happy to make that QR code for handouts, or add a print stylesheet, whenever you want.
+
+
+Index
+Code · HTML 
+Remove the case study and the Discussion Questions.
+
+
+Deciphering document structure and locating case study sections
+Deciphering document structure and locating case study sections
+sorry remove the word study and questions for discussion. I want it to end at Why David Still Matters
+
+
+Thinking about editing content to remove specific sections and truncate at a designated point
+Thinking about editing content to remove specific sections and truncate at a designated point
+I'll remove both sections, leaving the page to end at the "Why David Still Matters" coda followed by the footer.
+
+
+Edited a file, ran a command
+Edited a file, ran a command
+Done. Both sections are gone and the page now ends on the Why David Still Matters coda, followed by the small footer line.
+
+
+Presented file
+Presented file
+The word-study table and the discussion questions are removed. The page flow is now: hero → disclaimer → timeline (all fourteen chapters) → Why David Still Matters → footer.
+
+I left the underlying CSS for those sections (the .words table and .questions list styles) in place since it's inert and harmless—but say the word if you'd like me to strip it out for a cleaner file. Otherwise, upload this index.html to your repo the same way and the live site will update within a minute or two.
+
+
+Index
+Code · HTML 
+
+
+
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+
+
+Index · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +176,7 @@
     --text:#2A2620;
     --muted:#6B6153;
     --hairline:#CBBF9F;
-
+ 
     /* manuscript pigment lenses */
     --gold:#AE8A33;      /* gold leaf  — anointing & kingship */
     --lapis:#2C4A7E;     /* lapis      — covenant & hesed */
@@ -25,15 +184,15 @@
     --verdigris:#3E7365; /* verdigris  — worship & temple */
     --rubric:#8C3B2E;    /* red lead   — sin & fallout */
     --tyrian:#6B3A6E;    /* Tyrian     — Psalms */
-
+ 
     --serif:"EB Garamond",Georgia,serif;
     --display:"Marcellus",Georgia,serif;
     --sc:"Marcellus SC","Marcellus",serif;
     --mono:"IBM Plex Mono",ui-monospace,monospace;
-
+ 
     --maxw:960px;
   }
-
+ 
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -50,9 +209,9 @@
   }
   a{color:var(--lapis);text-underline-offset:2px;}
   ::selection{background:rgba(174,138,51,.28);}
-
+ 
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
-
+ 
   /* ---------- HERO / FRONTISPIECE ---------- */
   header.hero{
     background:var(--ink);
@@ -97,7 +256,7 @@
   .hero-stats .n{font-family:var(--display);font-size:26px;color:#F3ECD8;letter-spacing:.04em;}
   .hero-stats .l{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:4px;}
   .hero-note{margin-top:40px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;color:#8A8570;text-transform:uppercase;}
-
+ 
   /* ---------- STICKY CHAPTER NAV ---------- */
   nav.toc{
     position:sticky;top:0;z-index:40;
@@ -123,7 +282,27 @@
   .toc-inner a .rn{color:var(--gold);font-weight:500;margin-right:6px;}
   .toc-inner a:hover{color:var(--text);}
   .toc-inner a.active{color:var(--ink);border-bottom-color:var(--gold);}
-
+ 
+  /* ---------- DISCLAIMER (rubric note) ---------- */
+  .disclaimer{
+    max-width:var(--maxw);margin:34px auto 0;padding:0 24px;
+  }
+  .disclaimer .note{
+    background:var(--vellum-panel);
+    border:1px solid var(--hairline);
+    border-left:4px solid var(--rubric);
+    border-radius:2px;
+    padding:18px 22px;
+  }
+  .disclaimer .rubric-lbl{
+    font-family:var(--sc);font-size:12px;letter-spacing:.18em;
+    color:var(--rubric);margin:0 0 8px;display:block;
+  }
+  .disclaimer p{margin:0 0 10px;font-size:16.5px;line-height:1.55;color:var(--ink-soft);}
+  .disclaimer p:last-child{margin-bottom:0;}
+  .disclaimer strong{color:var(--rubric);font-weight:600;}
+  .disclaimer a{color:var(--lapis);word-break:break-word;}
+ 
   /* ---------- TOOLBAR / LENSES ---------- */
   .toolbar{max-width:var(--maxw);margin:0 auto;padding:28px 24px 4px;}
   .toolbar .lead{
@@ -155,14 +334,14 @@
   }
   .txtbtn:hover{color:var(--ink);}
   .count{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);}
-
+ 
   /* ---------- TIMELINE ---------- */
   main{max-width:var(--maxw);margin:0 auto;padding:30px 24px 40px;position:relative;}
   .timeline{position:relative;padding-left:64px;}
   .spine{position:absolute;left:24px;top:0;bottom:0;width:2px;background:var(--hairline);}
   .spine-fill{position:absolute;left:24px;top:0;width:2px;height:0;
     background:linear-gradient(var(--gold),var(--gold));box-shadow:0 0 8px rgba(174,138,51,.5);}
-
+ 
   .era{position:relative;margin:0 0 10px;padding-top:46px;}
   .era-head{position:relative;margin-bottom:20px;}
   .era-num{
@@ -176,7 +355,7 @@
     color:var(--ink);margin:0;line-height:1.12;
   }
   .era-range{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);margin-top:6px;text-transform:uppercase;}
-
+ 
   .event{position:relative;margin:0 0 4px;transition:opacity .3s;}
   .event::before{ /* node */
     content:"";position:absolute;left:-44px;top:20px;
@@ -186,7 +365,7 @@
   }
   .event.dim{opacity:.24;}
   .event.dim .ev-btn{cursor:default;}
-
+ 
   .ev-btn{
     width:100%;text-align:left;background:none;border:none;cursor:pointer;
     padding:14px 0;display:flex;gap:14px;align-items:baseline;
@@ -204,7 +383,7 @@
   .ev-tags .t{width:10px;height:10px;border-radius:2px;background:var(--c);opacity:.9;}
   .ev-caret{flex:0 0 auto;color:var(--muted);font-family:var(--mono);font-size:15px;transition:transform .25s;padding-top:2px;}
   .event[open-state="true"] .ev-caret{transform:rotate(45deg);}
-
+ 
   .ev-detail{
     overflow:hidden;max-height:0;transition:max-height .35s ease;
     padding-left:110px;
@@ -227,7 +406,7 @@
   .lens-legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
   .lens-legend .t{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);}
   .lens-legend .t i{width:9px;height:9px;border-radius:2px;background:var(--c);display:inline-block;}
-
+ 
   /* tag pigments */
   .tag-kingship{--c:var(--gold);}
   .tag-covenant{--c:var(--lapis);}
@@ -235,7 +414,7 @@
   .tag-worship{--c:var(--verdigris);}
   .tag-sin{--c:var(--rubric);}
   .tag-psalm{--c:var(--tyrian);}
-
+ 
   /* ---------- CODA (ink) ---------- */
   .coda{background:var(--ink);color:var(--vellum);margin-top:40px;padding:70px 24px 30px;position:relative;}
   .coda::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7;}
@@ -251,19 +430,19 @@
   .legacy .card h3{font-family:var(--display);font-weight:400;font-size:20px;color:var(--gold);margin:0 0 8px;letter-spacing:.02em;}
   .legacy .card p{margin:0;color:#CFC7B0;font-size:17px;}
   .legacy .card .r{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:#8A8570;margin-top:8px;}
-
+ 
   /* ---------- LIGHT SECTIONS (table, questions) ---------- */
   .section{max-width:var(--maxw);margin:0 auto;padding:64px 24px;}
   .section h2{color:var(--ink);}
   .section .kicker{color:var(--bronze);}
   .pair-note{font-style:italic;color:var(--muted);max-width:60ch;margin:10px 0 0;}
-
+ 
   table.words{width:100%;border-collapse:collapse;margin-top:26px;font-size:17px;}
   table.words th,table.words td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--hairline);vertical-align:top;}
   table.words th{font-family:var(--sc);font-size:12px;letter-spacing:.14em;color:var(--muted);font-weight:400;text-transform:uppercase;}
   table.words td.term{font-family:var(--mono);font-size:14px;color:var(--tyrian);white-space:nowrap;}
   table.words tr:hover td{background:rgba(241,235,220,.6);}
-
+ 
   ol.questions{counter-reset:q;list-style:none;padding:0;margin:26px 0 0;}
   ol.questions li{
     position:relative;padding:0 0 22px 56px;margin:0;
@@ -275,10 +454,10 @@
     position:absolute;left:0;top:-4px;
     font-family:var(--display);font-size:30px;color:var(--gold);
   }
-
+ 
   footer{background:var(--ink-soft);color:#B7B09A;text-align:center;padding:30px 24px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;}
   footer a{color:var(--gold);}
-
+ 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width:720px){
     body{font-size:18px;}
@@ -291,7 +470,7 @@
     .ev-detail{padding-left:0;}
     .hero{padding:60px 20px 52px;}
   }
-
+ 
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto;}
     *{transition:none !important;}
@@ -299,7 +478,7 @@
 </style>
 </head>
 <body>
-
+ 
 <header class="hero">
   <p class="eyebrow">A Chronicle of the Second King of Israel · c. 1040–970 BC</p>
   <h1>DAVID</h1>
@@ -318,11 +497,19 @@
   </div>
   <p class="hero-note">1 &amp; 2 Samuel · 1 Kings 1–2 · 1 Chronicles 10–29</p>
 </header>
-
+ 
+<div class="disclaimer">
+  <div class="note">
+    <span class="rubric-lbl">Please read first</span>
+    <p>This timeline may not be 100% complete or 100% accurate, and it <strong>should not be used for academic research</strong>. It is meant to give readers a chronological path of King David through 1 &amp; 2 Samuel, 1 Chronicles, and the Psalms.</p>
+    <p>If you are reading this and you have an issue, please head to my GitHub and open an issue: <a href="https://github.com/bryant-treacle/King-David-Timeline" target="_blank" rel="noopener">github.com/bryant-treacle/King-David-Timeline</a></p>
+  </div>
+</div>
+ 
 <nav class="toc" aria-label="Chapters">
   <div class="toc-inner" id="toc"></div>
 </nav>
-
+ 
 <div class="toolbar">
   <p class="lead">Lenses — filter the life by theme <span style="font-family:var(--serif);font-style:italic;font-size:14px;text-transform:none;letter-spacing:0;">(colored with the pigments of a medieval Psalter)</span></p>
   <div class="lenses" id="lenses"></div>
@@ -332,14 +519,14 @@
     <span class="count" id="count"></span>
   </div>
 </div>
-
+ 
 <main>
   <div class="timeline" id="timeline">
     <div class="spine"></div>
     <div class="spine-fill" id="spineFill"></div>
   </div>
 </main>
-
+ 
 <section class="coda">
   <div class="wrap">
     <p class="kicker">Coda</p>
@@ -363,40 +550,11 @@
     </div>
   </div>
 </section>
-
-<section class="section">
-  <p class="kicker">Word-Study Quick Reference</p>
-  <h2>Five Words That Carry the Story</h2>
-  <table class="words">
-    <thead><tr><th>Term</th><th>Meaning</th><th>Where it lands</th></tr></thead>
-    <tbody>
-      <tr><td class="term">dāwid</td><td>"beloved"</td><td>His name; echoed when God renames Solomon <em>Jedidiah</em>, "beloved of the LORD" (2 Sam 12:25).</td></tr>
-      <tr><td class="term">māshîaḥ</td><td>"anointed one," Messiah</td><td>The anointing that defines his kingship (1 Sam 16:13) and the title that points beyond him.</td></tr>
-      <tr><td class="term">hesed</td><td>covenant loyalty, steadfast love</td><td>Jonathan's bond; kindness to Mephibosheth (2 Sam 9); God's faithfulness despite David's sin.</td></tr>
-      <tr><td class="term">berith</td><td>covenant</td><td>Jonathan's friendship (1 Sam 18); the Davidic Covenant of an enduring throne (2 Sam 7).</td></tr>
-      <tr><td class="term">lēb</td><td>heart</td><td>"The LORD looks on the heart" (1 Sam 16:7); "a man after his own heart."</td></tr>
-    </tbody>
-  </table>
-  <p class="pair-note">Teaching tip: pair each narrative era with the psalm it produced — the cave with Psalm 57 and 142, Gath with Psalm 34 and 56, Bathsheba with Psalm 51, Absalom with Psalm 3. The events give the psalms their raw material; the psalms give the events their soul.</p>
-</section>
-
-<section class="section" style="padding-top:0;">
-  <p class="kicker">For the Class</p>
-  <h2>Questions for Discussion</h2>
-  <ol class="questions">
-    <li>David waited years between his anointing and his throne, refusing to seize it by force even when he could have killed Saul. Where are you being asked to wait on God rather than take a shortcut?</li>
-    <li>Compare David's response to Nathan (2 Sam 12; Ps 51) with Saul's excuses (1 Sam 15). What separates true repentance from mere damage control?</li>
-    <li>David was faithful in public worship yet passive as a father. How can strength in one area blind us to failure in another?</li>
-    <li>The Chronicler tells David's story without Bathsheba or Absalom, emphasizing worship instead. Why might God let the same life be told two ways — and what does each account teach that the other cannot?</li>
-    <li>Trace <em>hesed</em> through David's life: Jonathan's covenant, kindness to Mephibosheth, God's faithfulness despite his sin. Where have you received a covenant love you did not earn?</li>
-    <li>David poured out the water his men risked their lives to bring him (2 Sam 23:16). What has been sacrificed on your behalf, and how do you honor it?</li>
-  </ol>
-</section>
-
+ 
 <footer>
   Dates are approximate and anchored to a 40-year reign ending c. 970 BC · Built for adult study &amp; free to adapt
 </footer>
-
+ 
 <script>
 const TAGS = {
   kingship:"Anointing & kingship",
@@ -406,7 +564,7 @@ const TAGS = {
   sin:"Sin & fallout",
   psalm:"Psalms"
 };
-
+ 
 const ERAS = [
   { rn:"I", id:"roots", title:"Roots & Hidden Years", range:"c. 1040–1025 BC", events:[
     { year:"c. 1040 BC", title:"Born in Bethlehem, youngest son of Jesse", refs:["1 Samuel 16:1–13","Ruth 4:18–22","Matthew 1:3–6"], tags:[],
@@ -570,15 +728,15 @@ const ERAS = [
       context:`He had reigned forty years and died around age seventy, "full of days, riches, and honor."` }
   ]}
 ];
-
+ 
 /* ---------- render ---------- */
 const timeline = document.getElementById('timeline');
 const toc = document.getElementById('toc');
 const lenses = document.getElementById('lenses');
 const active = new Set();
-
+ 
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
-
+ 
 ERAS.forEach(era=>{
   const sec = el('section','era'); sec.id = era.id;
   const head = el('div','era-head');
@@ -586,12 +744,12 @@ ERAS.forEach(era=>{
   head.appendChild(el('h2','era-title',era.title));
   head.appendChild(el('div','era-range',era.range));
   sec.appendChild(head);
-
+ 
   era.events.forEach(ev=>{
     const wrap = el('article','event tag-carrier');
     wrap.dataset.tags = ev.tags.join(' ');
     ev.tags.forEach(t=>wrap.classList.add('tag-'+t)); // only for :root var chaining not needed; harmless
-
+ 
     const btn = el('button','ev-btn');
     btn.setAttribute('aria-expanded','false');
     btn.appendChild(el('span','ev-year',ev.year));
@@ -605,7 +763,7 @@ ERAS.forEach(era=>{
     btn.appendChild(mainc);
     btn.appendChild(el('span','ev-caret','+'));
     wrap.appendChild(btn);
-
+ 
     const detail = el('div','ev-detail');
     const inner = el('div','ev-detail-inner');
     const refs = el('div','refs');
@@ -625,18 +783,18 @@ ERAS.forEach(era=>{
     }
     detail.appendChild(inner);
     wrap.appendChild(detail);
-
+ 
     btn.addEventListener('click',()=>toggle(wrap,detail,btn));
     sec.appendChild(wrap);
   });
-
+ 
   timeline.appendChild(sec);
-
+ 
   const a = el('a',null,'<span class="rn">'+era.rn+'</span>'+era.title);
   a.href = '#'+era.id; a.dataset.era = era.id;
   toc.appendChild(a);
 });
-
+ 
 /* lenses */
 Object.entries(TAGS).forEach(([key,label])=>{
   const chip = el('button','chip tag-'+key);
@@ -649,10 +807,10 @@ Object.entries(TAGS).forEach(([key,label])=>{
   });
   lenses.appendChild(chip);
 });
-
+ 
 const allEvents = () => Array.from(document.querySelectorAll('.event'));
 const countEl = document.getElementById('count');
-
+ 
 function applyFilter(){
   const evs = allEvents();
   let shown = 0;
@@ -664,21 +822,21 @@ function applyFilter(){
   });
   countEl.textContent = active.size===0 ? evs.length+' events' : shown+' of '+evs.length+' events';
 }
-
+ 
 function toggle(wrap,detail,btn,force){
   const open = force!=null ? force : btn.getAttribute('aria-expanded')!=='true';
   btn.setAttribute('aria-expanded',String(open));
   wrap.setAttribute('open-state',String(open));
   detail.style.maxHeight = open ? detail.firstElementChild.scrollHeight+40+'px' : '0px';
 }
-
+ 
 document.getElementById('expandAll').addEventListener('click',()=>{
   allEvents().forEach(w=>{ if(w.classList.contains('dim'))return; toggle(w,w.querySelector('.ev-detail'),w.querySelector('.ev-btn'),true); });
 });
 document.getElementById('collapseAll').addEventListener('click',()=>{
   allEvents().forEach(w=>toggle(w,w.querySelector('.ev-detail'),w.querySelector('.ev-btn'),false));
 });
-
+ 
 /* scroll-spy for TOC */
 const tocLinks = Array.from(toc.querySelectorAll('a'));
 const spy = new IntersectionObserver((entries)=>{
@@ -691,7 +849,7 @@ const spy = new IntersectionObserver((entries)=>{
   });
 },{rootMargin:'-45% 0px -50% 0px',threshold:0});
 document.querySelectorAll('.era').forEach(s=>spy.observe(s));
-
+ 
 /* spine fill on scroll */
 const spineFill = document.getElementById('spineFill');
 const reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -706,9 +864,10 @@ window.addEventListener('resize',()=>{updateSpine();
   // re-measure any open panels
   allEvents().forEach(w=>{ if(w.getAttribute('open-state')==='true'){ const d=w.querySelector('.ev-detail'); d.style.maxHeight=d.firstElementChild.scrollHeight+40+'px'; }});
 });
-
+ 
 applyFilter();
 updateSpine();
 </script>
 </body>
 </html>
+ 
